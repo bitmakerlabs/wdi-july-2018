@@ -8,18 +8,74 @@
 /* BASIC SELECTORS */
 
 /* Tag selectors */
+h1 {
+  color: lightseagreen;
+  font-size: 40px;
+}
+
+p {
+  background-color: yellow;
+}
+
+h1 {
+  color: tomato;
+}
 
 
 /* Class selectors */
+.hero {
+  color: blue;
+}
 
 
 /* ID selectors */
-
+#hero-unit {
+  border: 10px dotted darkgoldenrod;
+}
 
 
 /* ADVANCED SELECTORS */
 
 /* Combining selectors */
 
+article.post {
+  border: 5px solid lightseagreen;
+}
+
+article.post.poop.betty {
+
+}
+
+/*  ANY h1 child of article */
+article h1 {
+  color: white;
+  background-color: black;
+}
+
+.post .inline-text {
+  border-bottom: 5px solid green;
+}
+
+/* ONLY h1 that are first-level descendants */
+article > h1 {
+  color: red;
+  background-color: purple;
+}
 
 /* Pseudo-selectors */
+.fifth-post:hover {
+  background-color: orange;
+}
+
+input:focus {
+  border: 10px solid black;
+}
+
+#article-list:active {
+  color: red;
+}
+
+#article-list:visited {
+  color: yellow;
+  border: 5px solid black;
+}
