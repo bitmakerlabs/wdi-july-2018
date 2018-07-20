@@ -1,0 +1,24 @@
+Memorize:
+  - Object
+  - State
+  - Behaviour
+
+
+Advantages of OOP
+
+1) Encapsulation
+
+2) Information Hiding
+
+3) Abstraction
+
+
+"Class" of objects - "Scientific Name"
+
+Class vs Instance
+
+
+Object     |  State                 | Behaviour
+-----------+------------------------+--------------------------------------
+Instance   | Instance Variables (@) | Instance Methods (def inside a class)
+???        | ???                    | ???
