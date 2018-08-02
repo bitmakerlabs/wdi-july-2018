@@ -32,14 +32,21 @@ get '/recipes' do
   erb :recipes
 end
 
-get '/recipes/1' do
-  erb :recipe_1
-end
+# get '/recipes/1' do
+#   erb :recipe_1
+# end
+#
+# get '/recipes/2' do
+#   erb :recipe_2
+# end
+#
+# get '/recipes/3' do
+#   erb :recipe_3
+# end
 
-get '/recipes/2' do
-  erb :recipe_2
-end
+get '/recipes/:id' do
+  # params is a hash
+  @id = params[:id]
 
-get '/recipes/3' do
-  erb :recipe_3
+  erb :recipe
 end
