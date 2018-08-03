@@ -11,7 +11,14 @@ get '/films' do
 end
 
 post '/films' do
-  "POST request: #{params}"
+  Film.create(title: params[:title],
+              description: params[:description],
+              rating: params[:rating],
+              country: params[:country],
+              available: params[:available]
+  )
+  # send a new GET request to '/'
+  redirect to("/")
 end
 
 put '/films' do
@@ -21,3 +28,10 @@ end
 delete '/films' do
   "DELETE request: #{params}"
 end
+
+
+
+
+
+
+

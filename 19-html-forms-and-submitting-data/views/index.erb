@@ -6,6 +6,9 @@
 </ul>
 <h2>New Film</h2>
 <form class="new-film" action="/films" method="post">
+  <!-- work-around for put or delete requests: -->
+  <!-- <input type="hidden" name="_method" value="delete"> -->
+
   <div>
     <!-- input type: text -->
     <label for="film-title">Title</label>
