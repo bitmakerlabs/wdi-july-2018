@@ -1,0 +1,8 @@
+
+<h1>All Songs</h1>
+
+<% @songs.each do |song| %>
+  <p>
+    <%= song.artist %>: <%= song.name %> (<%= song.length / 60 %> minutes)
+  </p>
+<% end  %>

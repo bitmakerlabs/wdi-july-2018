@@ -1,0 +1,22 @@
+<h1>Edit a song</h1>
+
+<%= form_for @song do |form_helper| %>
+
+  <p>
+    Song name:
+    <%= form_helper.text_field :name %>
+  </p>
+
+  <p>
+    Artist:
+    <%= form_helper.text_field :artist %>
+  </p>
+
+  <p>
+    Song length:
+    <%= form_helper.number_field :length %>
+  </p>
+
+  <%= form_helper.submit %>
+
+<% end %>
