@@ -5,6 +5,24 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Picture.destroy_all
+Tag.destroy_all
+
 Picture.create!(title: "Bunny", description: "Just look at this bunny", url: "http://theartmad.com/wp-content/uploads/2015/03/Bunny-2.jpg")
 Picture.create!(title: "Bird", description: "Standing on a branch and yelling", url: "http://40.media.tumblr.com/e0496fd38f282d7996bdce8618e6d2a5/tumblr_n7fwydGtMF1tu0z5no1_500.jpg")
 Picture.create!(title: "Guinea Pig", description: "A pepper for a hat", url: "http://i.imgur.com/5bNMuVa.jpg")
+
+Tag.create(name: "animals")
+Tag.create(name: "food")
+
+# apply food tag to last picture only
+Picture.last.tags << Tag.find_by(name: "food")
+
+# apply animals tag to all pictures
+# this adds rows to the pictures_tags join table
+Picture.all.each do |pic|
+  pic.tags << Tag.find_by(name: "animals")
+end
+
+
+
