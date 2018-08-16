@@ -18,6 +18,11 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    # Cut the wristband
+    session[:user_id] = nil
+
+    # optional flash
+    redirect_to root_url
   end
 end
 
