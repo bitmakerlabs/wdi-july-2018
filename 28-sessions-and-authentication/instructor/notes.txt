@@ -1,0 +1,15 @@
+
+submitted_email    = params[:email]    # mina@bitmaker.co
+submitted_password = params[:password] # computer
+
+u = User.find_by(email: submitted_email)
+
+hash_submitted_password = hash(u.salt, submitted_password)
+
+if u && u.hashed_salted_password == hash_submitted_password
+  # access granted
+  # redirect to dashboard
+else
+  # access denied
+  # render the form again
+end
