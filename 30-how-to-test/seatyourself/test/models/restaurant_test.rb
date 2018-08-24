@@ -3,12 +3,26 @@ require 'test_helper'
 class RestaurantTest < ActiveSupport::TestCase
 
   def test_restaurant_is_invalid_without_name
-    skip
+    # arrange
+    restaurant = Restaurant.new(opening_hour: 10, closing_hour: 23)
+
+    # act
+    is_it_valid = restaurant.valid?
+
+    # assert
+    assert_equal(false, is_it_valid)
   end
 
   def test_restaurant_is_invalid_without_opening_hour
-    skip
-  end
+    # arrange
+    restaurant = Restaurant.create(name: "Chez Bitmaker", closing_hour: 23)
+
+    # act
+    errors = restaurant.errors
+
+    # assert
+    assert_includes(errors, :opening_hour)
+    end
 
   def test_restaurant_is_invalid_without_closing_hour
     skip
