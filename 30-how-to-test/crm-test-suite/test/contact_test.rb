@@ -24,6 +24,8 @@ class TestContact < Minitest::Test
     actual_value = Contact.find(@contact.id)
 
     assert_equal(expected_value, actual_value)
+
+    # assert_equal(@contact, Contact.find(@contact.id))
   end
 
   def test_find_by
