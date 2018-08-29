@@ -1,7 +1,5 @@
-# Calculates the total accrued amount from principal loan
-# Note: rate must be as a percentage float i.e. 9.2 or 14.4
-# Note: number is number of periods in years
-def tot(orig, rate, number)
-  apr = rate / 100
-  orig * (1 + apr * number)
+def total_accrued_amount_from_loan(principal_loan, rate_percentage, periods_in_years)
+  decimal_rate_percentage = rate_percentage / 100
+  principal_loan * (1 + decimal_rate_percentage * periods_in_years)
 end
+
