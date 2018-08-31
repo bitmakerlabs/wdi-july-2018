@@ -1,20 +1,9 @@
-# Standard library that makes HTTP requests from Ruby
-require 'net/http'
+require 'httparty'
 
-# Standard library that parses string data into JSON format
-require 'json'
+response = HTTParty.get("http://myttc.ca/finch_station.json")
+# response.body is a string but we know it's formatted as JSON
+data = JSON.parse(response.body)
+# now we can comb through the 'data' hash
+puts data.keys
 
-# Standard library that parses string data into CSV format
-require 'csv'
-
-# Let's make some HTTP requests to a server and see what we get back
-# https://github.com/bitmakerlabs/response-types-demo
-# Net::HTTP.get('example.com', '/index.html')
-
-#make get request to localhost:3000/monsters
-#result = Net::HTTP.get('localhost', '/monsters', 3000)
-#puts result
-
-#result = Net::HTTP.get('localhost', '/monsters.text', 3000)
-#puts result
-
+#data["stops"].each do....
