@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data Modelling</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="slides.js"></script>
+    <style type="text/css">
+
+      @import url(slides.css);
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+## *Today's Lesson*
+
+# Data Modeling
+
+Today we'll continue to talk about databases and introduce the idea of relationships between tables.
+---
+
+
+# Topics Covered
+
+- Today's Goal
+- Database Review
+- Types of Relationships
+- One-to-One
+- One-to-Many
+- Many-to-Many
+- Foreign Keys
+- Join Tables
+---
+
+
+# Today's Goal
+
+> *Data modeling is the act of exploring and documenting data-oriented structures.*
+
+You'll be able to design a basic relational database to serve given requirements.
+
+For example:
+
+- how would you design a library system?
+- how would you design an e-commerce site?
+- how would you design a social media platform?
+---
+
+
+# Database Review
+
+## What's a database?
+
+A collection of data organized in an easily accessible and manageable way.
+---
+
+# Benefits of databases
+
+- keeps data organized
+- maintains relationships between datasets
+- manages reading from the database and writing to the database so multiple people can work with the data at the same time
+- avoids redundancy in data collection
+- preserves integrity of data with *data types*
+---
+
+# Kinds of databases
+
+- relational databases (often support SQL)
+- NoSQL databases (some newer databases support different ways of storing and accessing data)
+- text files (the simplest type)
+
+and many more: even a *blockchain* is a type of database!
+---
+
+# Relational databases
+
+<div style='clear: both'>
+  <div style='float: left; width: 45%'>
+    <br>
+    Relational databases store data in <b>tables</b> that relate to each other.
+    <br>
+    <br>
+    Chances are you'll only be using <b>relational databases</b> during this course.
+  </div>
+
+  <div style='float: right; width: 40%; position: relative; left: -100px; bottom: 50px;'>
+    <img src=high-level-tables.jpg>
+  </div>
+</div>
+---
+layout: true
+
+
+# Database Review
+---
+
+*Tables* are made up of *columns* and *rows*.
+
+<div style='relative'>
+  <div style='background: aquamarine; position: absolute; width: 50%; z-index: 100; border: 5px solid black'>
+    <div style='margin: 0; font-size: 20px; text-transform: uppercase; font-weight: bold; padding: .3em 0; text-align: center'>Actors</div>
+    <table class=treated style='text-align: center; font-size: .8em; margin-top: .2rem'>
+      <tr><th>id</th><th>name</th><th>actor_id</th></tr>
+      <tr><td>1</td><td>Homer Simpson</td><td>1</td></tr>
+      <tr><td>2</td><td>Abe Simpson</td><td>1</td></tr>
+      <tr><td>3</td><td>Krusty the Clown</td><td>1</td></tr>
+      <tr><td>4</td><td>Barney Gumble</td><td>1</td></tr>
+      <tr><td>5</td><td>Groundskeeper Willie</td><td>1</td></tr>
+      <tr><td>6</td><td>Mayor Quimby</td><td>1</td></tr>
+      <tr><td>7</td><td>Hans Moleman</td><td>1</td></tr>
+      <tr><td>8</td><td>Sideshow Mel</td><td>1</td></tr>
+      <tr><td>9</td><td>Squeaky Voiced Teen</td><td>1</td></tr>
+      <tr><td>10</td><td>Gil</td><td>1</td></tr>
+      <tr><td>11</td><td>Rich Texan</td><td>1</td></tr>
+      <tr><td>12</td><td>Bart Simpson</td><td>2</td></tr>
+    </table>
+  </div>
+
+  <div style='background: bisque; position: absolute; width: 60%; z-index: 100; left: 30%; top: 50%; border: 5px solid black'>
+    <div style='margin: 0; font-size: 20px; text-transform: uppercase; font-weight: bold; padding: .3em 0; text-align: center'>Catchphrases</div>
+    <table class=treated style='text-align: center; font-size: .8em; margin-top: .2rem'>
+      <tr><th>id</th><th>phrase</th><th>character_id</th></tr>
+      <tr><td>1</td><td>D'oh!</td><td>1</td></tr>
+      <tr><td>4</td><td>Mmm, donuts.</td><td>1</td></tr>
+      <tr><td>14</td><td>Oh, Homie.</td><td>16</td></tr>
+      <tr><td>17</td><td>Don't have a cow, man!</td><td>12</td></tr>
+      <tr><td>22</td><td>I didn't do it!</td><td>12</td></tr>
+      <tr><td>27</td><td>If anyone wants me, I'll be in my room.</td><td>19</td></tr>
+      <tr><td>32</td><td>Okily dokily!</td><td>38</td></tr>
+    </table>
+  </div>
+</div>
+---
+
+Each column has a *data type*: `Integer`, `Text`, `Date`, etc.
+
+Data types help preserve the integrity of our data.
+
+Each row in a table is a *record*, and is made up of *fields*, one field for each column.
+---
+
+The `actors` table ...
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr><td class=right>  1       </td><td> Dan       </td><td> Castellaneta </td><td> Main      </td></tr>
+    <tr><td class=right>  2       </td><td> Nancy     </td><td> Cartwright   </td><td> Main      </td></tr>
+    <tr><td class=right>  3       </td><td> Julie     </td><td> Kavner       </td><td> Main      </td></tr>
+    <tr><td class=right>  4       </td><td> Yeardley  </td><td> Smith        </td><td> Main      </td></tr>
+    <tr><td class=right>  5       </td><td> Hank      </td><td> Azaria       </td><td> Main      </td></tr>
+    <tr><td class=right>  6       </td><td> Harry     </td><td> Shearer      </td><td> Main      </td></tr>
+    <tr><td class=right>  7       </td><td> Pamela    </td><td> Hayden       </td><td> Secondary </td></tr>
+    <tr><td class=right>  8       </td><td> Tress     </td><td> MacNeille    </td><td> Secondary </td></tr>
+    <tr><td class=right>  9       </td><td> Maggie    </td><td> Roswell      </td><td> Secondary </td></tr>
+    <tr><td class=right> 10       </td><td> Russi     </td><td> Taylor       </td><td> Secondary </td></tr>
+    <tr><td class=right> 11       </td><td> Marcia    </td><td> Wallace      </td><td> Guest     </td></tr>
+    <tr><td class=right> 12       </td><td> Phil      </td><td> Hartman      </td><td> Guest     </td></tr>
+    <tr><td class=right> 13       </td><td> Joe       </td><td> Mantegna     </td><td> Guest     </td></tr>
+    <tr><td class=right> 14       </td><td> Frank     </td><td> Welker       </td><td> Guest     </td></tr>
+    <tr><td class=right> 15       </td><td> Kelsey    </td><td> Grammer      </td><td> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+`integer` and `text` are the column data types.
+
+The database will prevent text from being stored in an integer column.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em; background: yellow'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr><td class=right>  1       </td><td> Dan       </td><td> Castellaneta </td><td> Main      </td></tr>
+    <tr><td class=right>  2       </td><td> Nancy     </td><td> Cartwright   </td><td> Main      </td></tr>
+    <tr><td class=right>  3       </td><td> Julie     </td><td> Kavner       </td><td> Main      </td></tr>
+    <tr><td class=right>  4       </td><td> Yeardley  </td><td> Smith        </td><td> Main      </td></tr>
+    <tr><td class=right>  5       </td><td> Hank      </td><td> Azaria       </td><td> Main      </td></tr>
+    <tr><td class=right>  6       </td><td> Harry     </td><td> Shearer      </td><td> Main      </td></tr>
+    <tr><td class=right>  7       </td><td> Pamela    </td><td> Hayden       </td><td> Secondary </td></tr>
+    <tr><td class=right>  8       </td><td> Tress     </td><td> MacNeille    </td><td> Secondary </td></tr>
+    <tr><td class=right>  9       </td><td> Maggie    </td><td> Roswell      </td><td> Secondary </td></tr>
+    <tr><td class=right> 10       </td><td> Russi     </td><td> Taylor       </td><td> Secondary </td></tr>
+    <tr><td class=right> 11       </td><td> Marcia    </td><td> Wallace      </td><td> Guest     </td></tr>
+    <tr><td class=right> 12       </td><td> Phil      </td><td> Hartman      </td><td> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+`id`, `first_name`, `last_name`, and `cast` are the column names.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th  style='color: yellow'>id</th><th style='color: yellow'>first_name</th><th style='color: yellow'>last_name</th><th style='color: yellow'>cast</th>
+    </tr>
+    <tr><td class=right>  1       </td><td> Dan       </td><td> Castellaneta </td><td> Main      </td></tr>
+    <tr><td class=right>  2       </td><td> Nancy     </td><td> Cartwright   </td><td> Main      </td></tr>
+    <tr><td class=right>  3       </td><td> Julie     </td><td> Kavner       </td><td> Main      </td></tr>
+    <tr><td class=right>  4       </td><td> Yeardley  </td><td> Smith        </td><td> Main      </td></tr>
+    <tr><td class=right>  5       </td><td> Hank      </td><td> Azaria       </td><td> Main      </td></tr>
+    <tr><td class=right>  6       </td><td> Harry     </td><td> Shearer      </td><td> Main      </td></tr>
+    <tr><td class=right>  7       </td><td> Pamela    </td><td> Hayden       </td><td> Secondary </td></tr>
+    <tr><td class=right>  8       </td><td> Tress     </td><td> MacNeille    </td><td> Secondary </td></tr>
+    <tr><td class=right>  9       </td><td> Maggie    </td><td> Roswell      </td><td> Secondary </td></tr>
+    <tr><td class=right> 10       </td><td> Russi     </td><td> Taylor       </td><td> Secondary </td></tr>
+    <tr><td class=right> 11       </td><td> Marcia    </td><td> Wallace      </td><td> Guest     </td></tr>
+    <tr><td class=right> 12       </td><td> Phil      </td><td> Hartman      </td><td> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+This table has four columns: `id`, `first_name`, `last_name`, `cast`.
+
+Underscores are used for spaces in the column names.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr><td class=right style='background: lightblue'>  1       </td><td style='background: pink'> Dan       </td><td style='background: aquamarine'> Castellaneta </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  2       </td><td style='background: pink'> Nancy     </td><td style='background: aquamarine'> Cartwright   </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  3       </td><td style='background: pink'> Julie     </td><td style='background: aquamarine'> Kavner       </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  4       </td><td style='background: pink'> Yeardley  </td><td style='background: aquamarine'> Smith        </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  5       </td><td style='background: pink'> Hank      </td><td style='background: aquamarine'> Azaria       </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  6       </td><td style='background: pink'> Harry     </td><td style='background: aquamarine'> Shearer      </td><td style='background: wheat'> Main      </td></tr>
+    <tr><td class=right style='background: lightblue'>  7       </td><td style='background: pink'> Pamela    </td><td style='background: aquamarine'> Hayden       </td><td style='background: wheat'> Secondary </td></tr>
+    <tr><td class=right style='background: lightblue'>  8       </td><td style='background: pink'> Tress     </td><td style='background: aquamarine'> MacNeille    </td><td style='background: wheat'> Secondary </td></tr>
+    <tr><td class=right style='background: lightblue'>  9       </td><td style='background: pink'> Maggie    </td><td style='background: aquamarine'> Roswell      </td><td style='background: wheat'> Secondary </td></tr>
+    <tr><td class=right style='background: lightblue'> 10       </td><td style='background: pink'> Russi     </td><td style='background: aquamarine'> Taylor       </td><td style='background: wheat'> Secondary </td></tr>
+    <tr><td class=right style='background: lightblue'> 11       </td><td style='background: pink'> Marcia    </td><td style='background: aquamarine'> Wallace      </td><td style='background: wheat'> Guest     </td></tr>
+    <tr><td class=right style='background: lightblue'> 12       </td><td style='background: pink'> Phil      </td><td style='background: aquamarine'> Hartman      </td><td style='background: wheat'> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+This table has 12 rows.
+
+Each row is a *record*.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr style='background: lightcyan'><td class=center>1</td><td> Dan       </td><td> Castellaneta </td><td> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center>2</td><td> Nancy     </td><td> Cartwright   </td><td> Main      </td></tr>
+    <tr style='background: lightcyan'><td class=center>3</td><td> Julie     </td><td> Kavner       </td><td> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center>4</td><td> Yeardley  </td><td> Smith        </td><td> Main      </td></tr>
+    <tr style='background: lightcyan'><td class=center>5</td><td> Hank      </td><td> Azaria       </td><td> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center>6</td><td> Harry     </td><td> Shearer      </td><td> Main      </td></tr>
+    <tr style='background: lightcyan'><td class=center>7</td><td> Pamela    </td><td> Hayden       </td><td> Secondary </td></tr>
+    <tr style='background: powderblue'><td class=center>8</td><td> Tress     </td><td> MacNeille    </td><td> Secondary </td></tr>
+    <tr style='background: lightcyan'><td class=center>9</td><td> Maggie    </td><td> Roswell      </td><td> Secondary </td></tr>
+    <tr style='background: powderblue'><td class=center>10</td><td> Russi     </td><td> Taylor       </td><td> Secondary </td></tr>
+    <tr style='background: lightcyan'><td class=center>11</td><td> Marcia    </td><td> Wallace      </td><td> Guest     </td></tr>
+    <tr style='background: powderblue'><td class=center>12</td><td> Phil      </td><td> Hartman      </td><td> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+Each record (row) is made up of fields.
+
+In this example, each record has four fields.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr style='background: lightcyan'><td  class=center> 1</td><td style='background: pink'> Dan          </td><td style='background: wheat'> Castellaneta </td><td style='background: lightgreen'> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center> 2</td><td style='background: hotpink'> Nancy     </td><td style='background: beige'> Cartwright   </td><td style='background: greenyellow'> Main      </td></tr>
+    <tr style='background: lightcyan'><td  class=center> 3</td><td style='background: pink'> Julie        </td><td style='background: wheat'> Kavner       </td><td style='background: lightgreen'> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center> 4</td><td style='background: hotpink'> Yeardley  </td><td style='background: beige'> Smith        </td><td style='background: greenyellow'> Main      </td></tr>
+    <tr style='background: lightcyan'><td  class=center> 5</td><td style='background: pink'> Hank         </td><td style='background: wheat'> Azaria       </td><td style='background: lightgreen'> Main      </td></tr>
+    <tr style='background: powderblue'><td class=center> 6</td><td style='background: hotpink'> Harry     </td><td style='background: beige'> Shearer      </td><td style='background: greenyellow'> Main      </td></tr>
+    <tr style='background: lightcyan'><td  class=center> 7</td><td style='background: pink'> Pamela       </td><td style='background: wheat'> Hayden       </td><td style='background: lightgreen'> Secondary </td></tr>
+    <tr style='background: powderblue'><td class=center> 8</td><td style='background: hotpink'> Tress     </td><td style='background: beige'> MacNeille    </td><td style='background: greenyellow'> Secondary </td></tr>
+    <tr style='background: lightcyan'><td  class=center> 9</td><td style='background: pink'> Maggie       </td><td style='background: wheat'> Roswell      </td><td style='background: lightgreen'> Secondary </td></tr>
+    <tr style='background: powderblue'><td class=center>10</td><td style='background: hotpink'> Russi     </td><td style='background: beige'> Taylor       </td><td style='background: greenyellow'> Secondary </td></tr>
+    <tr style='background: lightcyan'><td  class=center>11</td><td style='background: pink'> Marcia       </td><td style='background: wheat'> Wallace      </td><td style='background: lightgreen'> Guest     </td></tr>
+    <tr style='background: powderblue'><td class=center>12</td><td style='background: hotpink'> Phil      </td><td style='background: beige'> Hartman      </td><td style='background: greenyellow'> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+Most tables have an `id` column that's automatically incremented as new records are added.
+
+The `id` column is called the *primary key* and each value must be unique throughout the table.
+
+<pre>
+  <table>
+    <tr class=type style='text-align: center; font-size: .8em'>
+      <td>(integer)</td><td>(text)</td><td>(text)</td><td>(text)</td>
+    </tr>
+    <tr class=column-names>
+      <th  style='color: yellow'>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+    </tr>
+    <tr><td class=center>1</td><td> Dan       </td><td> Castellaneta </td><td> Main      </td></tr>
+    <tr><td class=center>2</td><td> Nancy     </td><td> Cartwright   </td><td> Main      </td></tr>
+    <tr><td class=center>3</td><td> Julie     </td><td> Kavner       </td><td> Main      </td></tr>
+    <tr><td class=center>4</td><td> Yeardley  </td><td> Smith        </td><td> Main      </td></tr>
+    <tr><td class=center>5</td><td> Hank      </td><td> Azaria       </td><td> Main      </td></tr>
+    <tr><td class=center>6</td><td> Harry     </td><td> Shearer      </td><td> Main      </td></tr>
+    <tr><td class=center>7</td><td> Pamela    </td><td> Hayden       </td><td> Secondary </td></tr>
+    <tr><td class=center>8</td><td> Tress     </td><td> MacNeille    </td><td> Secondary </td></tr>
+    <tr><td class=center>9</td><td> Maggie    </td><td> Roswell      </td><td> Secondary </td></tr>
+    <tr><td class=center>10</td><td> Russi     </td><td> Taylor       </td><td> Secondary </td></tr>
+    <tr><td class=center>11</td><td> Marcia    </td><td> Wallace      </td><td> Guest     </td></tr>
+    <tr><td class=center>12</td><td> Phil      </td><td> Hartman      </td><td> Guest     </td></tr>
+  </table>
+</pre>
+---
+
+When a table has a relationship to another table, it has a column called a *foreign key*.
+
+The foreign key name is often the name of that associated table followed by `_id`.
+---
+
+In this example, `actor_id` in the `characters` table and `character_id` in the `catchphrases` table are foreign keys.
+
+<img style='width: 100%' src=foreign-keys.jpg>
+---
+
+A foreign key in one table will have the same value as a primary key in its corresponding record in the relating table.
+
+<hr>
+
+<h4 class=no-margin style='font-family: monospace'>Actors Table</h4>
+<table>
+  <tr class=column-names>
+    <th  style='color: yellow'>id</th><th>first_name</th><th>last_name</th><th>cast</th>
+  </tr>
+  <tr><td style='font-weight: bold; text-align: center; background: greenyellow'>1</td><td>Dan  </td><td>Castellaneta</td><td>Main</td></tr>
+  <tr><td style='font-weight: bold; text-align: center; background: cyan'>       2</td><td>Nancy</td><td>Cartwright  </td><td>Main</td></tr>
+  <tr><td style='font-weight: bold; text-align: center; background: orange'>     3</td><td>Julie</td><td>Kavner      </td><td>Main</td></tr>
+</table>
+
+<hr>
+
+<h4 class=no-margin style='font-family: monospace'>Characters Table</h4>
+<table>
+  <tr class=column-names>
+    <th>id</th><th>name</th><th style='color: yellow'>actor_id</th>
+  </tr>
+  <tr><td class=center>1</td><td>Bart Simpson </td><td style='font-weight: bold; text-align: center; background: cyan;       '>2</td></tr>
+  <tr><td class=center>2</td><td>Homer Simpson</td><td style='font-weight: bold; text-align: center; background: greenyellow;'>1</td></tr>
+  <tr><td class=center>3</td><td>Marge Simpson</td><td style='font-weight: bold; text-align: center; background: orange;     '>3</td></tr>
+</table>
+---
+
+## Keep in mind
+
+- we generally don't want to repeat information across tables
+
+- this can lead to data corruption as data could end up being stored as one value in one table and a different value in a second table
+
+- when your database is architected like this, it's *normalized*
+
+- if you have a wildly successful company with a ton of database hits, you may *denormalize* it by repeating information across tables, but for the time being, aim to keep your databases *normalized*
+---
+
+layout: false
+
+# Example Database With Relationships
+
+<img style='width: 100%' src=diagram.png>
+
+[Click for image only](diagram.png)
+---
+
+
+# Types of Relationships
+
+Tables in a system rarely exist in isolation. They usually connect to each other using a 'relationship'.
+
+The relationships are:
+
+- One-to-One
+- One-to-Many
+- Many-to-Many
+---
+
+
+# One-to-One
+
+> *relationship between two entities (`A` & `B`) in which one element of `A` may only be linked to one other element of `B`*
+
+### Examples
+
+- a user may have one profile
+- a country may have one capital
+- a person may have one full name
+
+
+### Attributes
+
+- simplest relationship
+- the relationship you'll use the least
+---
+
+
+# One-to-One
+
+A simple example (perhaps from a dating site):
+
+<pre>
+
+
+
+
+
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------|     one-to-one     |-----------|
+| Email    |--------------------| Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                |-----------|
+</pre>
+
+
+--
+
+***Why is this the least often used relationship?***
+---
+
+
+class: no-header-bottom
+
+<style>.no-header-bottom h1 { margin-bottom: 0 }</style>
+
+
+# One-to-One
+
+Because the same information can be expressed in a single table...
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------|     one-to-one     |-----------|
+| Email    |--------------------| Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                |-----------|
+</pre>
+
+becomes ...
+
+<pre>
+                |-----------|
+                | Users     |
+                |-----------|
+                | Email     |
+                | Password  |
+                | Name      |
+                | Bio       |
+                | Photo     |
+                | Likes     |
+                | Dislikes  |
+                |-----------|
+</pre>
+---
+
+
+class: no-header-bottom
+
+# One-to-One
+
+That said, it can still be useful to use one-to-one relationships.
+
+For example, imagine we are building a healthcare system with `Users`, each of whom could be either a `Doctor` or a `Patient`.
+
+The `User` info is the same for both, but the `Doctor` or `Patient` is specific to the individual user type.
+
+
+<pre>
+
+                    |----------|
+                    |  Users   |
+                    |----------|
+      --------------| Email    |---------------
+      |             | Password |              |
+      |             | Name     |              |
+  one-to-one        | UserType |          one-to-one
+      |             |----------|              |
+|-----------|                           |-----------|
+|  Doctors  |                           | Patients  |
+|-----------|                           |-----------|
+| Education |                           | Age       |
+| Salary    |                           | Illness   |
+| Specialty |                           | Insurance |
+|-----------|                           |-----------|
+
+</pre>
+---
+
+
+# One-to-One
+
+How will you know when to use a one-to-one?
+
+- start without using a one-to-one relationship, and instead create a single table with all the fields you'll need for the one entity
+
+- then if that single table becomes unwieldy, experiment with a one-to-one entity relationship
+---
+
+
+Even our `User` - `Doctor` - `Patient` entities could be on a single table!
+
+--
+
+<pre>
+
+                    |----------|
+                    |  Users   |
+      one-to-one    |----------|     one-to-one
+      --------------| Email    |---------------
+      |             | Password |              |
+|-----------|       | Name     |        |-----------|
+|  Doctors  |       | UserType |        | Patients  |
+|-----------|       |----------|        |-----------|
+| Education |                           | Age       |
+| Salary    |                           | Illness   |
+| Specialty |                           | Insurance |
+|-----------|         becomes...        |-----------|
+
+                     |-----------|
+                     | Users     |
+                     |-----------|
+                     | Email     |
+                     | Password  |
+                     | Name      |
+                     | Education |
+                     | Salary    |
+                     | Specialty |
+                     | Age       |
+                     | Illness   |
+                     | Insurance |
+                     |-----------|
+</pre>
+---
+
+
+<pre>
+
+                    |----------|
+                    |  Users   |
+      one-to-one    |----------|     one-to-one
+      --------------| Email    |---------------
+      |             | Password |              |
+|-----------|       | Name     |        |-----------|
+|  Doctors  |       | UserType |        | Patients  |
+|-----------|       |----------|        |-----------|
+| Education |                           | Age       |
+| Salary    |                           | Illness   |
+| Specialty |         becomes...        | Insurance |
+|-----------|                           |-----------|
+                     |-----------|
+                     | Users     |
+                     |-----------|
+                     | Email     |
+                     | Password  |
+                     | Name      |
+                     | Education |
+                     | Salary    |
+                     | Specialty |
+                     | Age       |
+                     | Illness   |
+                     | Insurance |
+                     |-----------|
+</pre>
+
+We wouldn't populate `Education`, `Salary` or `Specialty` if the *User* was a *Patient* and we wouldn't populate `Age`, `Illness` or `Insurance` if the user was a *Doctor*.
+---
+
+
+# One-to-One Foreign Keys
+
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------|     one-to-one     |-----------|
+| Email    |--------------------| Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                |-----------|
+</pre>
+
+What field has been missing from the tables that we've seen today?
+
+--
+
+The `id` field.
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------|     one-to-one     |-----------|
+| Id       |--------------------| Id        |
+| Email    |                    | Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                |-----------|
+</pre>
+---
+
+
+# One-to-One Foreign Keys
+
+
+A `foreign key` in one table will equal the `id` of its related table.
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------|     one-to-one     |-----------|
+| id       |-----------         | id        |
+| Email    |          |         | Name      |
+| Password |          |         | Bio       |
+|----------|          |         | Photo     |
+                      |         | Likes     |
+                      |         | Dislikes  |
+                      ----------| user_id   |
+                                |-----------|
+</pre>
+---
+
+
+# One-to-One Foreign Keys
+
+- a `User` **has one** `Profile`
+- a `Profile` **belongs to** a `User`
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------| has_one --->       |-----------|
+| id       |--------------------| id        |
+| Email    |    <--- belongs_to | Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                | user_id   |
+                                |-----------|
+</pre>
+---
+
+
+<pre>
+|----------|                    |-----------|
+| Users    |                    | Profiles  |
+|----------| has_one --->       |-----------|
+| id       |--------------------| id        |
+| Email    |    <--- belongs_to | Name      |
+| Password |                    | Bio       |
+|----------|                    | Photo     |
+                                | Likes     |
+                                | Dislikes  |
+                                | user_id   |
+                                |-----------|
+</pre>
+
+<pre>
+  Users
+|---------------------------|----------------|
+| id | email                | password       |
+|---------------------------|----------------|
+| 1  | jesse@pingpong.com   | 12345678       |
+| 2  | sandeep@gmail.ca     | guessmypass1   |
+| 3  | lily@hotmail.com     | #@$Jksdf9113df |
+|---------------------------|----------------|
+</pre>
+
+<pre>
+  Profiles
+|--------------|------------|----------------|---------|
+| id | name    | bio        | photo          | user_id |
+|---------------------------|----------------|---------|
+| 11 | Jesse   | fun        | jesse1.jpg     |    1    |
+| 12 | Sandeep | handsome   | sand_motor.gif |    2    |
+| 13 | Lily    | serious    | 7-of-9.png     |    3    |
+|--------------|------------|----------------|---------|
+</pre>
+---
+
+
+# One-to-Many
+
+>  *a relationship in which an element of `A` may be linked to many elements of `B`, but an element of `B` is linked to only one element of `A`*
+
+
+### Examples
+
+- one book can have many pages
+- one library system may have many branches
+- one recipe may have many steps
+---
+
+
+class: no-header-bottom
+
+# One-to-Many - Example
+
+<pre>
+|-----------------|                    |---------------------|
+| Library Systems |                    | Branches            |
+|-----------------|     one-to-many    |---------------------|
+| id              |--------------------| id                  |
+| Name            |                    | Name                |
+|-----------------|                    | Address             |
+                                       |---------------------|
+</pre>
+
+<hr>
+
+<pre>
+                   Riverdale Branch
+|---------|      /
+| Toronto | -----
+| Public |
+| Library | ----- City Hall Branch
+| System  |
+|---------| -----
+                 \
+                  Pape Branch
+|---------|
+| U of T  | -----------
+| Library |            \
+| System  | -----       Robarts Library
+|---------|      \
+                  First Nations House Library
+</pre>
+---
+
+
+# One-to-Many - Example
+
+<pre>
+                   Riverdale Branch
+|---------|      /
+| Toronto | -----
+| Public |
+| Library | ----- City Hall Branch
+| System  |
+|---------| -----
+                 \
+                  Pape Branch
+|---------|
+| U of T  | -----------
+| Library |            \
+| System  | -----       Robarts Library
+|---------|      \
+                  First Nations House Library
+</pre>
+
+In our example, a *branch* can belong to only one *library system*, but a *library system* can have many *branches*.
+---
+
+
+# One-to-Many - Foreign Keys
+
+Foreign keys work the same way in a *one-to-many* as a *one-to-one* relationship.
+
+<pre>
+|-----------------|                    |---------------------|
+| Library Systems |                    | Branches            |
+|-----------------|     one-to-many    |---------------------|
+| id              |-----------         | id                  |
+| Name            |          |         | Name                |
+|-----------------|          |         | Address             |
+                             --------- | library_system_id   |
+                                       |---------------------|
+</pre>
+
+<pre>
+  Library Systems
+|------------------------------------|
+| id | name                          |
+|------------------------------------|
+| 1  | Toronto Public Library System |
+| 2  | U of T Library System         |
+|------------------------------------|
+</pre>
+---
+
+
+# One-to-Many - Foreign Keys
+
+<pre>
+  Library Systems
+|------------------------------------|
+| id | name                          |
+|------------------------------------|
+| 1  | Toronto Public Library System |
+| 2  | U of T Library System         |
+|------------------------------------|
+</pre>
+
+
+<pre>
+  Branches
+|---------------------------|----------------|-------------------|
+| id | name                 | address        | library_system_id |
+|---------------------------|----------------|-------------------|
+| 1  | Pape Branch          | 123 Something  |          1        |
+| 2  | Riverdale Branch     | 456 Else Dr.   |          1        |
+| 3  | City Hall Branch     | 789 Banana Cr. |          1        |
+| 4  | Robarts              | 111 Grass Lane |          2        |
+| 5  | First Nations Hous.. | 222 Circle La. |          2        |
+|---------------------------|----------------|-------------------|
+</pre>
+
+Notice that the foreign key `column name` adopts the relating table's `name` (followed with `_id`).
+This is usually the case for foreign keys.
+---
+
+
+# Many-to-Many
+
+>  *a relationship in which an element of `A` may be linked to many elements of `B`, and an element of `B` may be linked to many elements of `A`*
+
+
+### Examples
+
+- a user can purchase several products, and a product may be purchased by several users
+- a book may be written by several authors, and an author may have written several books
+- a movie can have several actors, and an actor can be cast in many different movies
+---
+
+
+# Many-to-Many
+
+## Join Tables
+
+Many-to-Many tables are connected through *join* tables, which are tables that contain two or more foreign keys.
+---
+
+
+# Many-to-Many - Example
+
+<pre>
+|-----------------|                   |---------------------|
+| Actors          |                   | Movies              |
+|-----------------|    many-to-many   |---------------------|
+| id              |-------------------| id                  |
+| Name            |                   | Title               |
+| Gender          |                   | Genre               |
+| Age             |                   | Rating              |
+|-----------------|                   |---------------------|
+          |                                   |
+          |                                   |
+          |        |-----------------|        |
+    one-to-many    | Characters      |    one-to-many
+            \      |-----------------|      /
+             ------| Name            |------
+                   | actor_id        |
+                   | movie_id        |
+                   |-----------------|
+</pre>
+
+In this example, `Characters` is the join table.
+
+--
+
+Even though there's a *many-to-many* relationship between Actors and Movies, we still have *one-to-many* relationships to the `Characters` table.
+---
+
+
+class: no-header-bottom
+
+# Many-to-Many - Example
+
+<pre>
+  Actors
+|---------------------------|----------------|------|
+| id | name                 | gender         | age  |
+|---------------------------|----------------|------|
+| 1  | Harrison Ford        | male           |  77  |
+| 2  | Carrie Fisher        | female         |  66  |
+| 3  | Jennifer Lawrence    | female         |  25  |
+|---------------------------|----------------|------|
+</pre>
+
+<pre>
+  Movies
+|---------------------------|----------------|--------|
+| id | title                | genre          | rating |
+|---------------------------|----------------|--------|
+| 1  | Star Wars            | Sci-Fi         |  PG13  |
+| 2  | Silence of the Lambs | Thriller       |  R     |
+| 3  | Hunger Games         | Dystopian      |  AA    |
+|---------------------------|----------------|--------|
+</pre>
+
+<pre>
+  Characters
+|---------------------------|----------|----------|
+| id | name                 | actor_id | movie_id |
+|---------------------------|----------|----------|
+| 1  | Katniss              |    3     |     3    |
+| 2  | Han Solo             |    1     |     1    |
+| 3  | Princess Leia        |    2     |     1    |
+|---------------------------|----------|----------|
+</pre>
+---
+
+
+class: no-header-bottom
+
+# Many-to-Many - Joins
+
+Join tables that only have foreign keys (and no other data) need not have an `id` column.
+
+For example, let's imagine a store in which you can `star` a product.
+---
+
+
+class: no-header-bottom
+
+# Many-to-Many - Joins
+
+<pre>
+  Customers
+|---------------------|---------|------|
+| id | name           | gender  | age  |
+|---------------------|---------|------|
+| 1  | Harry Felson   | male    |  27  |
+| 2  | Katrina Owen   | female  |  36  |
+| 3  | Sandi Metz     | female  |  45  |
+|---------------------|---------|------|
+</pre>
+
+<pre>
+  Products
+|---------------------|-------|
+| id | title          | price |
+|---------------------|-------|
+| 1  | Banana Holder  |  4.99 |
+| 2  | Headphones     | 23.99 |
+| 3  | Mouse Pad      |  9.99 |
+|---------------------|-------|
+</pre>
+
+<pre>
+  Stars
+|-------------|------------|
+| customer_id | product_id |
+|-------------|------------|
+|      3      |      2     |
+|      1      |      2     |
+|      1      |      1     |
+|-------------|------------|
+</pre>
+---
+
+
+# Joins
+
+## Linking more than two tables together
+
+<pre>
+|-----------------|
+| Video Games     |
+|-----------------|
+| series_id       |
+| genre_id        |
+| developer_id    |
+| publisher_id    |
+|-----------------|
+</pre>
+---
+
+
+# Many-to-Many - Self-Referential Joins
+
+Sometimes you'll need to join a table to itself. This is called self-referential.
+
+Example:
+
+Social media network with followers:
+
+<pre>
+|----------|      |-------------|
+| Users    |      | Follows     |
+|----------|      |-------------|
+| id       |------| follower_id |
+| Email    |------| followed_id |
+| Password |      |-------------|
+|----------|
+</pre>
+---
+
+
+# Querying related tables
+
+We'll need in separate tabs:
+
+[Simpsons Database Diagram](diagram.png)
+
+[Simpsons Database Online](https://simpsons-database.herokuapp.com/)
+---
+
+
+# Querying related tables
+
+### Query one table and then using that result to query a second table.
+
+--
+
+Let's say we'd like to find Homer's catchphrases.
+
+First find out Homer's `id`:
+
+--
+
+```sql
+SELECT id FROM characters WHERE name = 'Homer Simpson';
+```
+
+--
+
+Then select all the `catchphrases` with Homer's `id` as the foreign key (`character_id`):
+
+--
+
+```sql
+SELECT phrase FROM catchphrases WHERE character_id = <answer from first step>;
+```
+---
+
+
+# Querying related tables
+
+### Nested query method
+
+We can do the same query in a single statement by using a nested query:
+
+--
+
+```sql
+SELECT phrase FROM catchphrases
+  WHERE character_id = (SELECT id FROM characters WHERE name = 'Homer Simpson');
+```
+---
+
+
+# Your Turn
+
+- find all the episodes from seasons 15
+
+- find all the characters played by Nancy Cartwright
+
+- find the most watched episode of season 1
+---
+
+
+# God Objects
+
+In an application, 'god' objects usually evolve -- these are `classes` (backed by `tables`) that the whole system revolves around.
+
+--
+
+There are usually two:
+
+- one is the `User`
+- one is the core business concept
+
+--
+
+For example, I work at an insurance company, so aside from `User`, the second god object is a `Policy` (as in Insurance Policy).
+---
+
+
+# Relating Databases to Ruby
+
+When we think of designing our system in Ruby, and then relating it to a database:
+
+What would a ruby `class` be in the database?
+
+--
+
+`Table`
+
+--
+
+What would a ruby `instance` be in the database?
+
+--
+
+`Row` or `Record`
+
+--
+
+What would a database `column` relate to in ruby?
+
+--
+
+`Attribute`
+---
+
+
+# CRM / ActiveRecord
+
+How do relations fit in with the CRM you've been working on?
+
+- if you add a 2nd table you just add another `ActiveRecord` class (`note.rb` in your CRM)
+
+- foreign keys are listed just like any other integer column
+---
+
+
+# Tools to use for Data Modeling
+
+- pen and paper
+- whiteboard (take a photo of it after you're done)
+- spreadsheet
+- text editor
+- http://asciiflow.com/
+- fancier software (with bigger learning curves) by googling "data modeling software"
+---
+
+
+# Today's Assignments
+
+As there's not a lot of coding today, get feedback from instructors on your database designs.
+
+You can just submit photos or images of your design when you submit your assignments.
+
+https://alexa.bitmaker.co/wdi/august-2018/this-week
+---
+
+
+class: no-header-bottom, smaller
+
+# Let's Design Some Databases!
+
+### Ideas
+
+<pre style=font-size:17px>
+
+- library system
+- social network
+- e-commerce platform
+- movie database
+- content management system
+- learning management system
+
+</pre>
+
+### Steps
+
+1. Brainstorm the tables
+2. Figure out the 'god' objects
+3. Draw the god objects in the middle of the whiteboard or page
+4. Go through the remaining tables, loosely from most important to least
+
+For each table:
+
+1. draw it
+2. make the appropriate connections to the rest of the system<br> (`one-to-one`, `one-to-many`, `many-to-many`)
+    </textarea>
+
+  </body>
+</html>
